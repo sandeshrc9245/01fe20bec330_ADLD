@@ -41,32 +41,24 @@ module delay_timer (
 
   reg [7:0] delay_counter;
 
-  always @(posedge clk or posedge reset) 
-  begin
-    if (reset) 
-      begin
+  always @(posedge clk or posedge reset)
+    begin
+    if (reset) begin
       delay_counter <= 8'b0;
       delayed_output <= 0;
-      end 
-    else if (trigger)
-      begin
+    end else if (trigger) begin
       delay_counter <= delay_input;
-      delayed_output <= 0; // Set to 0 at the beginning of the delay
-      end
-    else if (delay_counter != 0)
-      begin
+      delayed_output <= 0;
+    end else if (delay_counter != 0) begin
       delay_counter <= delay_counter - 1;
-      delayed_output <= 1; // Output stays high during the delay
-      end 
-    else 
-      begin
-      // Counter is 0, set output to 1
-      delayed_output <= 1;
+    end else begin
+      delayed_output <= ~delayed_output; // Toggle delayed_output
       delay_counter <= delay_input;
-      end
+    end
   end
 
 endmodule
+
 
 
 
